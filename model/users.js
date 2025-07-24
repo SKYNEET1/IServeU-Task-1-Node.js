@@ -1,22 +1,22 @@
 const mongoose = require('mongoose');
 
 
-const upiSchema = mongoose.Schema({
-    upiId: {
-        type: String,
-        required: true,
-        maxlength: 5,
-    },
-    app: {
-        type: String,
-        enum: ['Google Pay', 'PhonePe', 'Paytm'],
-        required: true,
-    },
-    accHolder: {
-        type: String,
-        required: true,
-    }
-})
+// const upiSchema = mongoose.Schema({
+//     upiId: {
+//         type: String,
+//         required: true,
+//         maxlength: 5,
+//     },
+//     app: {
+//         type: String,
+//         enum: ['Google Pay', 'PhonePe', 'Paytm'],
+//         required: true,
+//     },
+//     accHolder: {
+//         type: String,
+//         required: true,
+//     }
+// })
 
 
 const dataController = mongoose.Schema({
@@ -33,20 +33,20 @@ const dataController = mongoose.Schema({
         type: String,
         required: true
     },
-    ammount: {
-        type: Number,
-        required: true
-    },
+    // ammount: {
+    //     type: Number,
+    //     required: true
+    // },
     balance: {
         type: Number,
         required: true,
         default: 0
     },
-    category: {
-        type: String,
-        required: true,
-        enum: ['grocery', 'fuel', 'rent']
-    },
+    // category: {
+    //     type: String,
+    //     required: true,
+    //     enum: ['grocery', 'fuel', 'rent']
+    // },
     transactionId: {
         type: String,
         required: true,
@@ -71,10 +71,10 @@ const dataController = mongoose.Schema({
         required: true,
         enum: ['UPI', 'NEFT', 'IMPS'],
     },
-    upiAccounts: {
-        type: [upiSchema],
-        default: [],
-    },
+    // upiAccounts: {
+    //     type: [upiSchema],
+    //     default: [],
+    // },
     dailySpent: {
         type: Number,
         default: 0
@@ -92,11 +92,15 @@ const tranUserSchema = mongoose.Schema({
     upiId: { type: String, required: true, maxlength: 5 },
     app: { type: String, enum: ['Google Pay', 'PhonePe', 'Paytm'], required: true },
     accHolder: { type: String, required: true },
+        category: {
+        type: String,
+        required: true,
+        enum: ['grocery', 'fuel', 'rent']
+    },
     name: String,
     place: String,
     ammount: Number,
     balance: Number,
-    category: String,
     transactionId: String,
     remark: String,
     paymentMethod: String,

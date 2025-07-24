@@ -4,10 +4,10 @@ const {TranUser,User} = require('../model/users')
 
 exports.detailTransaction = async (req, res) => {
     try {
-        const { name, place, ammount, balance, category, transactionId, remark,paymentMethod,accId } = req.body;
+        const { name, place, balance, transactionId, remark,paymentMethod,accId } = req.body;
 
         // Validate required fields
-        if (!name || !place || !ammount || !balance || !category || !transactionId || !paymentMethod || !accId) {
+        if (!name || !place  || !balance || !category || !transactionId || !paymentMethod || !accId) {
             return res.status(400).json({
                 success: 'false',
                 message: 'All fields are required'
@@ -59,7 +59,7 @@ exports.detailTransaction = async (req, res) => {
 
         
 
-        const response = await User.create({ name, place, ammount, balance, category, transactionId, remark,paymentMethod,accId })
+        const response = await User.create({ name, place, balance, transactionId, remark,paymentMethod,accId })
         res.status(201).json({
             success: 'true',
             message: 'User created successfully',
@@ -80,7 +80,7 @@ exports.detailTransaction = async (req, res) => {
 
 exports.newTran = async (req, res) => {
     try {
-        const { transactionId, ammount, upiId, app, accHolder } = req.body;
+        const { transactionId, ammount, upiId, app, accHolder,category } = req.body;
 
         // Validate required fields
         if (!transactionId || !ammount || !upiId || !app || !accHolder) {
@@ -140,7 +140,7 @@ exports.newTran = async (req, res) => {
             place: existingUser.place,
             ammount: ammount,
             balance: existingUser.balance,
-            category: existingUser.category,
+            category,
             transactionId: existingUser.transactionId,
             remark: existingUser.remark,
             paymentMethod: existingUser.paymentMethod,

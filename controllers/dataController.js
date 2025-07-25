@@ -193,7 +193,7 @@ exports.updateUser = async (req, res) => {
         const { transactionId } = req.params;
         const toBeUpdateValues = req.body;
 
-        const allowedUpdate = ['remark', 'category'];
+        const allowedUpdate = ['remark'];
         const updateKeys = Object.keys(toBeUpdateValues);
         const isValidOrNot = updateKeys.every((key) => allowedUpdate.includes(key))
         if (!isValidOrNot) {

@@ -1,31 +1,13 @@
 const mongoose = require('mongoose');
 
 
-// const upiSchema = mongoose.Schema({
-//     upiId: {
-//         type: String,
-//         required: true,
-//         maxlength: 5,
-//     },
-//     app: {
-//         type: String,
-//         enum: ['Google Pay', 'PhonePe', 'Paytm'],
-//         required: true,
-//     },
-//     accHolder: {
-//         type: String,
-//         required: true,
-//     }
-// })
-
-
 const dataController = mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    accId:{
-        type:Number,
+    accId: {
+        type: Number,
         required: true,
         unique: true,
     },
@@ -66,11 +48,11 @@ const dataController = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    paymentMethod: {
-        type: String,
-        required: true,
-        enum: ['UPI', 'NEFT', 'IMPS'],
-    },
+    // paymentMethod: {
+    //     type: String,
+    //     required: true,
+    //     enum: ['UPI', 'NEFT', 'IMPS'],
+    // },
     // upiAccounts: {
     //     type: [upiSchema],
     //     default: [],
@@ -92,10 +74,15 @@ const tranUserSchema = mongoose.Schema({
     upiId: { type: String, required: true, maxlength: 5 },
     app: { type: String, enum: ['Google Pay', 'PhonePe', 'Paytm'], required: true },
     accHolder: { type: String, required: true },
-        category: {
+    category: {
         type: String,
         required: true,
         enum: ['grocery', 'fuel', 'rent']
+    },
+    paymentMethod: {
+        type: String,
+        required: true,
+        enum: ['UPI', 'NEFT', 'IMPS'],
     },
     name: String,
     place: String,

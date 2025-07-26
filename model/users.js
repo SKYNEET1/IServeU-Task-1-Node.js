@@ -57,14 +57,17 @@ const dataController = mongoose.Schema({
     //     type: [upiSchema],
     //     default: [],
     // },
-    dailySpent: {
+    dailyLimit: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true,
     },
-    monthlySpent: {
+    monthlyLimit: {
         type: Number,
-        default: 0
+        default: 0,
+        required: true,
     },
+
 
 }, { timestamps: true })
 
@@ -84,15 +87,24 @@ const tranUserSchema = mongoose.Schema({
         required: true,
         enum: ['UPI', 'NEFT', 'IMPS'],
     },
+    dailySpent: {
+        type: Number,
+        default: 0
+    },
+    monthlySpent: {
+        type: Number,
+        default: 0
+    },
+    transactionId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     name: String,
     place: String,
     ammount: Number,
     balance: Number,
-    transactionId: String,
     remark: String,
-    paymentMethod: String,
-    dailySpent: Number,
-    monthlySpent: Number,
 }, { timestamps: true });
 
 

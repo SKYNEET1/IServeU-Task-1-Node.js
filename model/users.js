@@ -105,6 +105,7 @@ const tranUserSchema = mongoose.Schema({
     ammount: Number,
     balance: Number,
     remark: String,
+    accId:Number
 }, { timestamps: true });
 
 

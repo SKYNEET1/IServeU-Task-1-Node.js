@@ -4,7 +4,7 @@ const { TranUser, User } = require('../model/users')
 
 exports.detailTransaction = async (req, res) => {
     try {
-        const { name, place, balance, transactionId, remark, accId,dailyLimit,monthlyLimit } = req.body;
+        const { name, place, balance, transactionId, remark, accId, dailyLimit, monthlyLimit } = req.body;
 
         // Validate required fields
         if (!name || !place || !balance || !transactionId || !accId || !dailyLimit || !monthlyLimit) {
@@ -121,7 +121,7 @@ exports.newTran = async (req, res) => {
         const tranUser = await TranUser.create({
             user: existingUser._id,
             upiId,
-            accId:existingUser.accId,
+            accId: existingUser.accId,
             app,
             accHolder,
             name: existingUser.name,
@@ -132,8 +132,9 @@ exports.newTran = async (req, res) => {
             transactionId,
             remark: existingUser.remark,
             paymentMethod,
-            dailySpent:dailySpent,
-            monthlySpent:monthlySpent
+            dailySpent: dailySpent,
+            monthlySpent: monthlySpent,
+            accId: existingUser.accId
         });
 
         res.status(201).json({
@@ -153,10 +154,54 @@ exports.newTran = async (req, res) => {
 };
 
 
-exports.resetUser = async (req,res) => {
-    
-}
+exports.getAllTran = async (req, res) => {
+    try {
+        // const { accId } = req.params;
+        const checkIsDeleted = await User.find({ isDeleted: false });
+        if (!checkIsDeleted || checkIsDeleted.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No active user found',
+            });
+        }
+        const accId = checkIsDeleted.map((aId) => {
+            return aId.accId
+        })
+        const allTranj = await Promise.all(accId.map(async (accId) => {
+            const trans = await TranUser.find({ accId }).sort({ date: -1 });
+            return {
+                accId,
+                transactions: trans
+            }
+        }))
 
+        // Remember that "When a map function is used to work on async data it returns a array of promise even if it looks like a array of object"
+
+        const filtered = allTranj.filter(entry => entry.transactions.length > 0);
+
+        if (filtered.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No transactions found for any user',
+            });
+        }
+        res.status(200)
+            .json({
+                success: true,
+                data: filtered,
+                message: `User's -  All transaction fetched successfully`,
+            })
+
+    } catch (err) {
+        console.log("error in getting data from transactions" + err)
+        res.status(500)
+            .json({
+                success: false,
+                message: "AccId is not fetched",
+            })
+    }
+
+}
 
 exports.getAllUsers = async (req, res) => {
     try {
@@ -190,7 +235,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getReqUser = async (req, res) => {
     try {
         const { accId } = req.params;
-        const response = await User.find({ accId, isDeleted: false });
+        const response = await User.find({ accId: accId, isDeleted: false });
         if (response.length === 0) {
             res.status(500)
                 .json({
@@ -266,7 +311,7 @@ exports.deleteUser = async (req, res) => {
     try {
         const { accId } = req.params;
         const response = await User.findOneAndUpdate(
-            { accId },
+            { accId: accId },
             { $set: { isDeleted: true } },
             { new: true }
         )
